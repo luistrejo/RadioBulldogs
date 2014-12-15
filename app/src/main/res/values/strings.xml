@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">Radio Bulldogs</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
+    <string name="title_activity_top_rated_fragment">TopRatedFragment</string>
+    <string name="title_activity_games_fragment">GamesFragment</string>
+    <string name="title_activity_movies_fragment">MoviesFragment</string>
+
+</resources>
