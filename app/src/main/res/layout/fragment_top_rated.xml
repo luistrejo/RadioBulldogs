@@ -1,13 +1,51 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical"
+    android:layout_height="450dp"
+    android:orientation="horizontal"
     android:background="#fa6a6a"
-    android:visibility="visible">
-    <ListView
-        android:id="@+id/listview1"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content" />
+    android:visibility="visible"
+    android:weightSum="1"
+    android:id="@+id/lista">
 
-</LinearLayout>
+
+    <ListView
+            android:id="@+id/listview1"
+            android:layout_width="fill_parent"
+            android:layout_height="390dp"
+            android:divider="@android:drawable/divider_horizontal_bright"
+            android:dividerHeight="5dp"
+            android:headerDividersEnabled="false"
+        android:layout_span="12"
+        android:layout_alignParentTop="true" />
+
+    <ImageButton
+        android:id="@+id/imbEnviar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@android:drawable/ic_menu_send"
+        android:onClick="enviar"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+
+        android:layout_alignParentEnd="true" />
+
+    <EditText
+        android:id="@+id/etMensaje"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@android:drawable/editbox_background_normal"
+        android:inputType="textCapSentences"
+        android:hint="Dinos tu comentario :)"
+        android:textColor="#ff915bff"
+        android:textStyle="normal"
+        android:layout_alignParentBottom="true"
+        android:layout_toLeftOf="@+id/imbEnviar"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignTop="@+id/imbEnviar">
+
+    </EditText>
+
+
+</RelativeLayout>
