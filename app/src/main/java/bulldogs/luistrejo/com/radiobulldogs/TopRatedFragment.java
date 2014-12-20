@@ -3,9 +3,12 @@ package bulldogs.luistrejo.com.radiobulldogs;
 
 
 import android.app.Activity;
+import android.app.ProgressDialog;
+import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -29,41 +32,63 @@ import org.apache.http.protocol.BasicHttpContext;
 import org.apache.http.protocol.HttpContext;
 import org.apache.http.util.EntityUtils;
 import org.json.JSONArray;
-import org.w3c.dom.Text;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
-import java.security.AccessControlContext;
 import java.util.ArrayList;
 import java.util.List;
 
 
+
 public class TopRatedFragment extends Fragment {
+    ProgressDialog progressDialog;
+    Context mContext;
+
     private EditText mensaje;
     private ImageButton enviar;
     //variable de usuario, en ella se almacenara el nombre de usuario
     //de la persona para saber de quien es el comentario, mientras se implementa
     //el login y registro usar esta variable, remover despues.
     private String usuario;
-
+    private ProgressDialog pDialog;
     @Override
     public void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
 
-
-
+        mContext = this.getActivity();
+        progressDialog = new ProgressDialog(mContext);
+        progressDialog.setCancelable(true);
+        progressDialog.setMessage("Cargando comentarios...");
+        progressDialog.show();
         //carga de listview con los datos al iniciar
-        Thread tr = new Thread(){
+        final Thread tr = new Thread(){
             @Override
         public void run(){
+
                 final String Resultado = leer();
+
+            try {
                 getActivity().runOnUiThread(
                         new Runnable() {
                             @Override
                             public void run() {
+
                                 cargaListado(obtDatosJSON(Resultado));
+
+
                             }
                         });
+                synchronized (this){
+                    wait(150);
+                }
+            }catch (InterruptedException e){
+
+
+
+            }
+                //Toast.makeText(TopRatedFragment.this.getActivity(), "Ups! Ocurrio un error al intentar cargar los mensajes, intenta de nuevo en unos segundos.",Toast.LENGTH_LONG).show();
+                progressDialog.dismiss();
+
             }
         };
         tr.start();
@@ -72,8 +97,10 @@ public class TopRatedFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,Bundle savedInstanceState) {
 
         View rootView = inflater.inflate(R.layout.fragment_top_rated, container, false);
-
         //remover esta variable cuando implementes login
+
+
+
         usuario="luistrejo";
         mensaje=(EditText)rootView.findViewById(R.id.etMensaje);
         enviar=(ImageButton)rootView.findViewById(R.id.imbEnviar);
@@ -90,7 +117,6 @@ public class TopRatedFragment extends Fragment {
 
 
 
-
         return rootView;
 
 
@@ -102,6 +128,8 @@ public class TopRatedFragment extends Fragment {
         listado.setAdapter(adaptador);
         }
     //leemos los datos que nos contesta el servidor
+
+
     public String leer(){
         HttpClient cliente = new DefaultHttpClient();
         HttpContext contexto = new BasicHttpContext();
@@ -114,6 +142,8 @@ public class TopRatedFragment extends Fragment {
 
         }catch (Exception e){
             //TODO: handle exception
+
+
         }
         return resultado;
     }
@@ -165,7 +195,16 @@ public class TopRatedFragment extends Fragment {
     private Activity context;
 
     Enviar(Activity context) { this.context=context; }
-    @Override
+
+        protected void onPreExecute() {
+            //para el progress dialog
+            pDialog = new ProgressDialog(TopRatedFragment.this.getActivity());
+            pDialog.setMessage("Enviando mensaje....");
+            pDialog.setIndeterminate(false);
+            pDialog.setCancelable(false);
+            pDialog.show();
+        }
+
     protected String doInBackground(String... params){
         if (enviar())
             context.runOnUiThread(new Runnable() {
@@ -186,9 +225,15 @@ public class TopRatedFragment extends Fragment {
         return null;
 
     }
+        protected void onPostExecute(String result) {
 
+            pDialog.dismiss();//ocultamos progess dialog.
+
+
+        }
 }
-}
+
+ }
 
 
 
