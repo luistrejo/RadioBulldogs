@@ -7,5 +7,10 @@
     <string name="title_activity_top_rated_fragment">TopRatedFragment</string>
     <string name="title_activity_games_fragment">GamesFragment</string>
     <string name="title_activity_movies_fragment">MoviesFragment</string>
+    <string name="title_activity_login">Login</string>
+    <string name="title_activity_registro">Registro</string>
+    <string name="errorlogin">Error: Usuario o contraseña incorrectas, por favor intente de nuevo.</string>
+    <string name="title_activity_acerca">Acerca de</string>
+    <string name="title_activity_sugerencias">Sugerencias</string>
 
 </resources>

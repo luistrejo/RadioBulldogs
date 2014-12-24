@@ -2,11 +2,15 @@ package bulldogs.luistrejo.com.radiobulldogs;
 
 import android.app.ActionBar;
 import android.app.FragmentTransaction;
+import android.content.Intent;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.ViewPager;
 
 import android.os.Bundle;
-
+import android.view.KeyEvent;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 
 
 public class MainActivity extends FragmentActivity implements
@@ -16,7 +20,7 @@ public class MainActivity extends FragmentActivity implements
     private TabsPagerAdapter mAdapter;
     private ActionBar actionBar;
     // Tab titles
-    private String[] tabs = { "Top Rated", "Radio", "Comentar" };
+    private String[] tabs = { "Comentar", "Radio", "Top Rated" };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,4 +80,41 @@ public class MainActivity extends FragmentActivity implements
     public void onTabReselected(ActionBar.Tab tab, FragmentTransaction ft) {
 
     }
+    //evitar que vuelva a la actividad de login
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
+            moveTaskToBack(true);
+            return true;
+        }
+        return super.onKeyDown(keyCode, event);
+    }
+    //menu del action bar
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu items for use in the action bar
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu_main, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+    //acciones del menu actionbar
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.Acerca:
+                Intent acerca = new Intent(this, Acerca.class);
+                acerca.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(acerca);
+                break;
+            case R.id.Sugerencias:
+                Intent sugerencias = new Intent(this, Sugerencias.class);
+                sugerencias.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(sugerencias);
+                break;
+
+            default:
+                break;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
 }

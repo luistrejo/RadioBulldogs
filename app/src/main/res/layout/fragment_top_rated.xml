@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="450dp"
     android:orientation="horizontal"
-    android:background="#fa6a6a"
+    android:background="#ff49e7fa"
     android:visibility="visible"
     android:weightSum="1"
     android:id="@+id/lista">
@@ -13,11 +13,13 @@
             android:id="@+id/listview1"
             android:layout_width="fill_parent"
             android:layout_height="390dp"
-            android:divider="@android:drawable/divider_horizontal_bright"
-            android:dividerHeight="5dp"
-            android:headerDividersEnabled="false"
+            android:divider="#9933cc"
+        android:headerDividersEnabled="false"
         android:layout_span="12"
-        android:layout_alignParentTop="true" />
+        android:layout_alignParentTop="true"
+        android:stackFromBottom="true"
+        android:dividerHeight="1dp"
+        />
 
     <ImageButton
         android:id="@+id/imbEnviar"

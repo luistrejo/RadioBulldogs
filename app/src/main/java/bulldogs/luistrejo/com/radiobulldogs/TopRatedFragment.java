@@ -8,7 +8,6 @@ import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -126,7 +125,8 @@ public class TopRatedFragment extends Fragment {
         ArrayAdapter<String> adaptador = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1,datos);
         ListView listado = (ListView)this.getActivity().findViewById(R.id.listview1);
         listado.setAdapter(adaptador);
-        }
+
+    }
     //leemos los datos que nos contesta el servidor
 
 
@@ -170,6 +170,7 @@ public class TopRatedFragment extends Fragment {
         HttpPost httppost;
         httpclient = new DefaultHttpClient();
         httppost = new HttpPost("http://192.168.0.109/RadioB/insertarcomentario.php");
+
         //Añadimos los datos que vamos a enviar
         nameValuePairs = new ArrayList<NameValuePair>(2);
         nameValuePairs.add(new BasicNameValuePair("usuario", usuario.toString().trim()));
@@ -178,6 +179,7 @@ public class TopRatedFragment extends Fragment {
         try {
             httppost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
             httpclient.execute(httppost);
+            
             return true;
         }catch (UnsupportedEncodingException e){
             e.printStackTrace();
