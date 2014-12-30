@@ -12,5 +12,5 @@
     <string name="errorlogin">Error: Usuario o contraseña incorrectas, por favor intente de nuevo.</string>
     <string name="title_activity_acerca">Acerca de</string>
     <string name="title_activity_sugerencias">Sugerencias</string>
-
+    <string name="nota_wifi">Nota: Recuerda estar conectado a la red Wi-fi "Radio Bulldogs".</string>
 </resources>

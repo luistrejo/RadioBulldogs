@@ -33,10 +33,6 @@
             android:label="@string/title_activity_games_fragment" >
         </activity>
         <activity
-            android:name=".MoviesFragment"
-            android:label="@string/title_activity_movies_fragment" >
-        </activity>
-        <activity
             android:name=".Registro"
             android:label="@string/title_activity_registro"
             android:parentActivityName=".Login" >

@@ -20,7 +20,7 @@ public class MainActivity extends FragmentActivity implements
     private TabsPagerAdapter mAdapter;
     private ActionBar actionBar;
     // Tab titles
-    private String[] tabs = { "Comentar", "Radio", "Top Rated" };
+    private String[] tabs = { "Comentarios", "Radio"};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -100,15 +100,21 @@ public class MainActivity extends FragmentActivity implements
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
+
+            case R.id.Sugerencias:
+                Intent sugerencias = new Intent(this, Sugerencias.class);
+                sugerencias.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(sugerencias);
+                break;
             case R.id.Acerca:
                 Intent acerca = new Intent(this, Acerca.class);
                 acerca.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(acerca);
                 break;
-            case R.id.Sugerencias:
-                Intent sugerencias = new Intent(this, Sugerencias.class);
-                sugerencias.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                startActivity(sugerencias);
+            case R.id.Logout:
+                Intent logout = new Intent(this, Login.class);
+                logout.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(logout);
                 break;
 
             default:

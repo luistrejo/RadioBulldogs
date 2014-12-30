@@ -5,6 +5,7 @@ package bulldogs.luistrejo.com.radiobulldogs;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -45,10 +46,6 @@ public class TopRatedFragment extends Fragment {
 
     private EditText mensaje;
     private ImageButton enviar;
-    //variable de usuario, en ella se almacenara el nombre de usuario
-    //de la persona para saber de quien es el comentario, mientras se implementa
-    //el login y registro usar esta variable, remover despues.
-    private String usuario;
     private ProgressDialog pDialog;
     @Override
     public void onCreate(Bundle savedInstanceState){
@@ -59,6 +56,7 @@ public class TopRatedFragment extends Fragment {
         progressDialog.setCancelable(true);
         progressDialog.setMessage("Cargando comentarios...");
         progressDialog.show();
+
         //carga de listview con los datos al iniciar
         final Thread tr = new Thread(){
             @Override
@@ -100,7 +98,6 @@ public class TopRatedFragment extends Fragment {
 
 
 
-        usuario="luistrejo";
         mensaje=(EditText)rootView.findViewById(R.id.etMensaje);
         enviar=(ImageButton)rootView.findViewById(R.id.imbEnviar);
         enviar.setOnClickListener(new View.OnClickListener() {
@@ -170,6 +167,10 @@ public class TopRatedFragment extends Fragment {
         HttpPost httppost;
         httpclient = new DefaultHttpClient();
         httppost = new HttpPost("http://192.168.0.109/RadioB/insertarcomentario.php");
+
+        //Consultamos valor usuario del shared preferences
+        SharedPreferences settings = getActivity().getSharedPreferences("usuario",Context.MODE_PRIVATE);
+        String usuario = settings.getString("usuario", "valorpordefecto");
 
         //Añadimos los datos que vamos a enviar
         nameValuePairs = new ArrayList<NameValuePair>(2);
