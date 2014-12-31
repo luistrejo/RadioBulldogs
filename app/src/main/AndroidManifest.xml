@@ -32,6 +32,9 @@
             android:name=".GamesFragment"
             android:label="@string/title_activity_games_fragment" >
         </activity>
+        <service
+            android:enabled="true"
+            android:name=".Servicio" />
         <activity
             android:name=".Registro"
             android:label="@string/title_activity_registro"

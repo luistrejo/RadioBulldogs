@@ -18,98 +18,51 @@ import java.io.IOException;
 
 public class GamesFragment extends Fragment implements View.OnClickListener{
     private static final String TAG = "ServicesDemo";
-    private Button buttonPlay;
-    private Button buttonStopPlay;
     private MediaPlayer player;
     private SeekBar volumeSeekbar = null;
     private AudioManager audioManager = null;
+    Button buttonStart, buttonStop;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
         View rootView = inflater.inflate(R.layout.fragment_games, container, false);
-
-        initializeMediaPlayer();
         initControls();
-        buttonPlay = (Button)rootView.findViewById(R.id.startPlaying);
-        buttonPlay.setOnClickListener(this);
-        buttonStopPlay = (Button)rootView.findViewById(R.id.buttonStopPlay);
-        buttonStopPlay.setEnabled(false);
-        buttonStopPlay.setOnClickListener(this);
         volumeSeekbar = (SeekBar)rootView.findViewById(R.id.seekBar1);
         audioManager = (AudioManager)this.getActivity().getSystemService(Context.AUDIO_SERVICE);
+        buttonStart = (Button) rootView.findViewById(R.id.startPlaying);
+        buttonStop = (Button) rootView.findViewById(R.id.buttonStopPlay);
+        buttonStart.setOnClickListener(this);
+        buttonStop.setOnClickListener(this);
         return rootView;
 
 
 
     }
+@Override
 
-
-
-
-
-    public void onClick(View v) {
-        if (v == buttonPlay) {
-            startPlaying();
-        } else if (v == buttonStopPlay) {
-            stopPlaying();
+    public void onClick(View v){
+        switch (v.getId()){
+            case R.id.startPlaying:
+                Log.d(TAG, "onClick: Starting service");
+                getActivity().startService(new Intent(getActivity(), Servicio.class));
+                break;
+            case R.id.buttonStopPlay:
+                Log.d(TAG, "onClick: Deteniendo servicio");
+                getActivity().stopService(new Intent(getActivity(), Servicio.class));
+                break;
         }
+    if (v == buttonStart) {
+        buttonStop.setEnabled(true);
+        buttonStart.setEnabled(false);
+    } else if (v == buttonStop) {
+        buttonStop.setEnabled(false);
+        buttonStart.setEnabled(true);
+    }
     }
 
-    private void startPlaying() {
-        buttonStopPlay.setEnabled(true);
-        buttonPlay.setEnabled(false);
-        try {
-            player.prepare();
-        } catch (IOException e) {
-           e.printStackTrace();
-        }
-        player.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
-
-            public void onPrepared(MediaPlayer mp) {
-                player.start();
-
-            }
-        });
 
 
-    }
-
-    private void stopPlaying() {
-        if (player.isPlaying()) {
-            player.stop();
-            player.release();
-            player = null;
-            initializeMediaPlayer();
-        }
-
-        buttonPlay.setEnabled(true);
-        buttonStopPlay.setEnabled(false);
-
-    }
-
-    private void initializeMediaPlayer() {
-        player = new MediaPlayer();
-        try {
-            player.setDataSource("http://192.168.0.109:8000");
-        } catch (IllegalArgumentException e) {
-            e.printStackTrace();
-        } catch (IllegalStateException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-
-    }
-
-    @Override
-    public void onPause() {
-        super.onPause();
-        if (player.isPlaying()) {
-            player.stop();
-        }
-    }
 
     // control de volumen con el seckbar
     private void initControls()
