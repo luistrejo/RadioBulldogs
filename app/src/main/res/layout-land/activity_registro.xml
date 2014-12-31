@@ -1,0 +1,160 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+    android:layout_height="match_parent" android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    tools:context="bulldogs.luistrejo.com.listviewmysql.Registrar"
+    >
+
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="Nombre (s):"
+        android:id="@+id/textView"
+        android:layout_marginTop="21dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginLeft="18dp"
+        android:layout_marginStart="18dp" />
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:inputType="textPersonName"
+        android:hint="Nombre"
+        android:ems="10"
+        android:id="@+id/etnombre"
+        android:textAlignment="center"
+        android:maxLength="30"
+        android:lines="1"
+        android:layout_above="@+id/textView2"
+        android:layout_alignLeft="@+id/etpaterno"
+        android:layout_alignStart="@+id/etpaterno" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="Apellido Paterno:"
+        android:id="@+id/textView2"
+        android:layout_marginTop="20dp"
+        android:layout_below="@+id/textView"
+        android:layout_alignLeft="@+id/textView"
+        android:layout_alignStart="@+id/textView" />
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:inputType="textPersonName"
+        android:hint="Paterno"
+        android:ems="10"
+        android:id="@+id/etpaterno"
+        android:maxLength="30"
+        android:textAlignment="center"
+        android:layout_alignBottom="@+id/textView2"
+        android:layout_centerHorizontal="true" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="Apellido Materno:"
+        android:id="@+id/textView3"
+        android:layout_below="@+id/textView2"
+        android:layout_alignLeft="@+id/textView2"
+        android:layout_alignStart="@+id/textView2"
+        android:layout_marginTop="14dp" />
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:inputType="textPersonName"
+        android:hint="Materno"
+        android:ems="10"
+        android:id="@+id/etmaterno"
+        android:maxLength="30"
+        android:textAlignment="center"
+        android:layout_alignBottom="@+id/textView3"
+        android:layout_alignLeft="@+id/etpaterno"
+        android:layout_alignStart="@+id/etpaterno" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="Nombre usuario:"
+        android:id="@+id/textView4"
+        android:layout_centerVertical="true"
+        android:layout_toLeftOf="@+id/spinEspecialidad"
+        android:layout_toStartOf="@+id/spinEspecialidad"
+        android:layout_marginRight="38dp"
+        android:layout_marginEnd="38dp" />
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/etusuario"
+        android:maxLength="30"
+        android:lines="1"
+        android:ems="10"
+        android:layout_below="@+id/textView4"
+        android:layout_alignLeft="@+id/textView3"
+        android:layout_alignStart="@+id/textView3" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="Contraseña:"
+        android:id="@+id/textView5"
+        android:layout_below="@+id/etusuario"
+        android:layout_toLeftOf="@+id/etmaterno"
+        android:layout_toStartOf="@+id/etmaterno" />
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:inputType="textPassword"
+        android:ems="10"
+        android:id="@+id/etcontraseña"
+        android:maxLength="30"
+        android:layout_below="@+id/textView5"
+        android:layout_toLeftOf="@+id/spinEspecialidad"
+        android:layout_toStartOf="@+id/spinEspecialidad" />
+
+    <Spinner
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/spinEspecialidad"
+        android:clickable="true"
+        android:focusable="true"
+        android:layout_below="@+id/textView6"
+        android:layout_toRightOf="@+id/etusuario"
+        android:layout_toEndOf="@+id/etusuario" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="Especialidad:"
+        android:id="@+id/textView6"
+        android:layout_above="@+id/etusuario"
+        android:layout_toRightOf="@+id/etmaterno"
+        android:layout_toEndOf="@+id/etmaterno" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Enviar"
+        android:id="@+id/btregistrar"
+        android:onClick="insertar"
+        android:layout_below="@+id/textView5"
+        android:layout_toRightOf="@+id/etmaterno"
+        android:layout_toEndOf="@+id/etmaterno"
+        android:layout_marginLeft="19dp"
+        android:layout_marginStart="19dp" />
+</RelativeLayout>

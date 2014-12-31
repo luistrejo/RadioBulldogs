@@ -1,10 +1,13 @@
 package bulldogs.luistrejo.com.radiobulldogs;
 
 import android.content.Context;
+import android.content.Intent;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
+import android.nfc.Tag;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,7 +17,7 @@ import android.widget.SeekBar;
 import java.io.IOException;
 
 public class GamesFragment extends Fragment implements View.OnClickListener{
-
+    private static final String TAG = "ServicesDemo";
     private Button buttonPlay;
     private Button buttonStopPlay;
     private MediaPlayer player;
@@ -59,7 +62,7 @@ public class GamesFragment extends Fragment implements View.OnClickListener{
         try {
             player.prepare();
         } catch (IOException e) {
-            e.printStackTrace();
+           e.printStackTrace();
         }
         player.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
 
