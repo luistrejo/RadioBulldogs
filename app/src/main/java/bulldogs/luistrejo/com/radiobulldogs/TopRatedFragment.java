@@ -12,6 +12,7 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -124,9 +125,10 @@ public class TopRatedFragment extends Fragment {
         listado.setAdapter(adaptador);
 
     }
+
+
+
     //leemos los datos que nos contesta el servidor
-
-
     public String leer(){
         HttpClient cliente = new DefaultHttpClient();
         HttpContext contexto = new BasicHttpContext();
@@ -234,7 +236,8 @@ public class TopRatedFragment extends Fragment {
 
 
         }
-}
+
+    }
 
  }
 

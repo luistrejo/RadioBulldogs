@@ -9,6 +9,7 @@ import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.os.IBinder;
 import android.util.Log;
+import android.view.View;
 import android.widget.Toast;
 
 import java.io.IOException;
@@ -48,22 +49,22 @@ public class Servicio extends Service{
         Log.d(TAG, "onStart");
         player.start();
 
+        Intent intent1 = new Intent(this, MainActivity.class);
+        PendingIntent pIntent = PendingIntent.getActivity(this, 0, intent1, 0);
 
-            NotificationManager notificationManager = (NotificationManager)
-                    getSystemService(NOTIFICATION_SERVICE);
-        Intent intent1 = new Intent(getApplicationContext(), MainActivity.class);
-        PendingIntent pendingIntent = PendingIntent.getActivity(getApplicationContext(), 0,intent1, 0);
         Notification noti = new Notification.Builder(this)
                 .setContentTitle("Radio Bulldogs")
                 .setContentText("La estacion de radio mas perra!")
                 .setSmallIcon(R.drawable.ic_launcher)
-                .setContentIntent(pendingIntent)
+                .setContentIntent(pIntent)
+                .setTicker("Radio Buldogs! La estacion de radio mas perra." )
                 .build();
 
 
+        // hide the notification after its selected
+        noti.flags |= Notification.FLAG_NO_CLEAR;
 
         startForeground(1337, noti);
-
 
 
         return START_NOT_STICKY;
@@ -77,5 +78,14 @@ public class Servicio extends Service{
         player.stop();
         stopForeground(true);
     }
+
+    private void playnoti() {
+        player.start();
+    }
+    private void stopnoti() {
+        player.stop();
+    }
+
+
 
 }

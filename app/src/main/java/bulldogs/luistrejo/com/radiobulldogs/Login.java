@@ -41,6 +41,8 @@ public class Login extends Activity{
 
     boolean result_back;
     private ProgressDialog pDialog;
+    SharedPreferences pref;
+    SharedPreferences.Editor editor2;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -52,6 +54,10 @@ public class Login extends Activity{
         user= (EditText) findViewById(R.id.etemail);
         pass= (EditText) findViewById(R.id.etpass);
         blogin= (Button) findViewById(R.id.btlogin);
+        pref = getSharedPreferences("estatuslogin", MODE_PRIVATE);
+        editor2 = pref.edit();
+
+        estatus();
 
         //Login button action
         blogin.setOnClickListener(new View.OnClickListener(){
@@ -77,6 +83,10 @@ public class Login extends Activity{
                     editor.putString("usuario", usuario);
                     editor.commit();
 
+                    // guardar true para login para no mostrar esta activity de nuevo
+                    editor2.putString("login","true");
+                    editor2.commit();
+
                 }else{
                     //si detecto un error en la primera validacion vibrar y mostrar un Toast con un mensaje de error.
                     err_login();
@@ -86,6 +96,19 @@ public class Login extends Activity{
         });
 
 
+
+    }
+
+    //evaluamos el estatus del login
+    //si ya esta logueado es true y lo redireccionamos a la activity principal
+
+    public void estatus(){
+        String getStatus=pref.getString("login","nil");
+        if(getStatus.equals("true")){
+            Intent Main = new Intent(this, MainActivity.class );
+            startActivity(Main);
+        }
+        else {return;}
 
     }
 
@@ -232,4 +255,5 @@ public class Login extends Activity{
         }
         return super.onKeyDown(keyCode, event);
     }
+
 }

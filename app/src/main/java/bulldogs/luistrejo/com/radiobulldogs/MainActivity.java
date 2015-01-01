@@ -3,6 +3,7 @@ package bulldogs.luistrejo.com.radiobulldogs;
 import android.app.ActionBar;
 import android.app.FragmentTransaction;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.ViewPager;
 
@@ -20,10 +21,16 @@ public class MainActivity extends FragmentActivity implements
     private TabsPagerAdapter mAdapter;
     private ActionBar actionBar;
     // Tab titles
-    private String[] tabs = { "Comentarios", "Radio"};
+    private String[] tabs = { "Radio", "Chat"};
 
+    SharedPreferences pref;
+    SharedPreferences.Editor editor2;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
+        pref = getSharedPreferences("estatuslogin", MODE_PRIVATE);
+        editor2 = pref.edit();
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
@@ -115,6 +122,14 @@ public class MainActivity extends FragmentActivity implements
                 Intent logout = new Intent(this, Login.class);
                 logout.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(logout);
+
+                // guardar true para login para no mostrar esta activity de nuevo
+                editor2.putString("login","false");
+                editor2.commit();
+
+                //si esta activo el servicio de musica lo cerramos
+                this.stopService(new Intent(this, Servicio.class));
+
                 break;
 
             default:
