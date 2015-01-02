@@ -83,11 +83,7 @@ public class Login extends Activity{
                     editor.putString("usuario", usuario);
                     editor.commit();
 
-                    // guardar true para login para no mostrar esta activity de nuevo
-                    editor2.putString("login","true");
-                    editor2.commit();
-
-                }else{
+                    }else{
                     //si detecto un error en la primera validacion vibrar y mostrar un Toast con un mensaje de error.
                     err_login();
                 }
@@ -231,10 +227,14 @@ public class Login extends Activity{
 
             if (result.equals("ok")){
 
+                // guardar true para login para no mostrar esta activity de nuevo
+                editor2.putString("login","true");
+                editor2.commit();
+                //Si el login fue valido redireccionamos a la main
                 Intent i=new Intent(Login.this, MainActivity.class);
                 i.putExtra("user",user);
                 startActivity(i);
-
+                                
             }else{
                 err_login();
             }

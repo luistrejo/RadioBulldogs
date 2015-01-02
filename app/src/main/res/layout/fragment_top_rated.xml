@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="450dp"
+    android:layout_height="match_parent"
     android:orientation="horizontal"
     android:background="#ff49e7fa"
     android:visibility="visible"
@@ -10,7 +10,7 @@
 
 
     <ListView
-            android:id="@+id/listview1"
+            android:id="@+id/listview"
             android:layout_width="fill_parent"
             android:layout_height="390dp"
             android:divider="#9933cc"
@@ -19,7 +19,7 @@
         android:layout_alignParentTop="true"
         android:stackFromBottom="true"
         android:dividerHeight="1dp"
-        />
+        android:layout_above="@+id/imbEnviar" />
 
     <ImageButton
         android:id="@+id/imbEnviar"
@@ -29,8 +29,8 @@
         android:onClick="enviar"
         android:layout_alignParentBottom="true"
         android:layout_alignParentRight="true"
-
-        android:layout_alignParentEnd="true" />
+        android:layout_alignParentEnd="true"
+        android:baselineAlignBottom="false" />
 
     <EditText
         android:id="@+id/etMensaje"

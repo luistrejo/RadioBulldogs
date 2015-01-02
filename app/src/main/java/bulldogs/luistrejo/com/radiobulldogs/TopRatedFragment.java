@@ -9,95 +9,58 @@ import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.Toast;
 
-import org.apache.http.HttpEntity;
-import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
-import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
-import org.apache.http.protocol.BasicHttpContext;
-import org.apache.http.protocol.HttpContext;
-import org.apache.http.util.EntityUtils;
 import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
+import Listviewcomentarios.JSONfunctions;
+import Listviewcomentarios.ListViewAdapter;
 
 
 public class TopRatedFragment extends Fragment {
-    ProgressDialog progressDialog;
-    Context mContext;
 
     private EditText mensaje;
     private ImageButton enviar;
     private ProgressDialog pDialog;
-    @Override
-    public void onCreate(Bundle savedInstanceState){
-        super.onCreate(savedInstanceState);
 
-        mContext = this.getActivity();
-        progressDialog = new ProgressDialog(mContext);
-        progressDialog.setCancelable(true);
-        progressDialog.setMessage("Cargando comentarios...");
-        progressDialog.show();
+    // Declaramos variables para listview
+    JSONObject jsonobject;
+    JSONArray jsonarray;
+    ListView listview;
+    ListViewAdapter adapter;
+    ProgressDialog mProgressDialog;
+    ArrayList<HashMap<String, String>> arraylist;
+    public static String usuario = "usuario";
+    public static String comentario = "comentario";
 
-        //carga de listview con los datos al iniciar
-        final Thread tr = new Thread(){
-            @Override
-        public void run(){
-
-                final String Resultado = leer();
-
-            try {
-                getActivity().runOnUiThread(
-                        new Runnable() {
-                            @Override
-                            public void run() {
-
-                                cargaListado(obtDatosJSON(Resultado));
-
-
-                            }
-                        });
-                synchronized (this){
-                    wait(150);
-                }
-            }catch (InterruptedException e){
-
-
-
-            }
-                //Toast.makeText(TopRatedFragment.this.getActivity(), "Ups! Ocurrio un error al intentar cargar los mensajes, intenta de nuevo en unos segundos.",Toast.LENGTH_LONG).show();
-                progressDialog.dismiss();
-
-            }
-        };
-        tr.start();
-    }
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,Bundle savedInstanceState) {
 
         View rootView = inflater.inflate(R.layout.fragment_top_rated, container, false);
-        //remover esta variable cuando implementes login
-
-
+        //corremos metodo para que carge listview
+        new DownloadJSON().execute();
 
         mensaje=(EditText)rootView.findViewById(R.id.etMensaje);
         enviar=(ImageButton)rootView.findViewById(R.id.imbEnviar);
@@ -110,56 +73,7 @@ public class TopRatedFragment extends Fragment {
                     Toast.makeText(TopRatedFragment.this.getActivity(), "Ups! Tal parece que no has escrito nada.",Toast.LENGTH_LONG).show();
             }
         });
-
-
-
-
-        return rootView;
-
-
-    }
-    //cargamos la lista
-    public void cargaListado (ArrayList<String> datos){
-        ArrayAdapter<String> adaptador = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1,datos);
-        ListView listado = (ListView)this.getActivity().findViewById(R.id.listview1);
-        listado.setAdapter(adaptador);
-
-    }
-
-
-
-    //leemos los datos que nos contesta el servidor
-    public String leer(){
-        HttpClient cliente = new DefaultHttpClient();
-        HttpContext contexto = new BasicHttpContext();
-        HttpGet httpget = new HttpGet("http://192.168.0.109/listview/GetData.php");
-        String resultado=null;
-        try {
-            HttpResponse response = cliente.execute(httpget, contexto);
-            HttpEntity entity = response.getEntity();
-            resultado = EntityUtils.toString(entity, "UTF-8");
-
-        }catch (Exception e){
-            //TODO: handle exception
-
-
-        }
-        return resultado;
-    }
-    public ArrayList<String> obtDatosJSON(String response){
-        ArrayList<String> listado = new ArrayList<String>();
-        try {
-            JSONArray json = new JSONArray(response);
-            String texto="";
-            for (int i=0; i<json.length();i++){
-                texto = json.getJSONObject(i).getString("usuario") +" - "+
-                        json.getJSONObject(i).getString("comentario");
-                listado.add(texto);
-            }
-        }catch (Exception e){
-            //TODO: handle exception
-        }
-        return listado;
+          return rootView;
     }
 
     //enviamos el mensaje escrito al servidor
@@ -237,6 +151,61 @@ public class TopRatedFragment extends Fragment {
 
         }
 
+    }
+
+    // Clase que carga el listview con los datos del servidor
+    private class DownloadJSON extends AsyncTask<Void, Void, Void> {
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            // Create a progressdialog
+            mProgressDialog = new ProgressDialog(TopRatedFragment.this.getActivity());
+            // Set progressdialog message
+            mProgressDialog.setMessage("Cargando comentarios...");
+            mProgressDialog.setIndeterminate(false);
+            // Show progressdialog
+            mProgressDialog.show();
+        }
+
+        @Override
+        protected Void doInBackground(Void... params) {
+            // Create an array
+            arraylist = new ArrayList<HashMap<String, String>>();
+            // Retrieve JSON Objects from the given URL address
+            jsonobject = JSONfunctions.getJSONfromURL("http://192.168.0.109/RadioB/GetData.php");
+
+            try {
+                // Locate the array name in JSON
+                jsonarray = jsonobject.getJSONArray("comentarios");
+
+                for (int i = 0; i < jsonarray.length(); i++) {
+                    HashMap<String, String> map = new HashMap<String, String>();
+                    jsonobject = jsonarray.getJSONObject(i);
+                    // Retrive JSON Objects
+                    map.put("usuario", jsonobject.getString("usuario"));
+                    map.put("comentario", jsonobject.getString("comentario"));
+                    // Set the JSON Objects into the array
+                    arraylist.add(map);
+                }
+            } catch (JSONException e) {
+                Log.e("Error", e.getMessage());
+                e.printStackTrace();
+            }
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void args) {
+            // Locate the listview in listview_main.xml
+            listview = (ListView)getActivity().findViewById(R.id.listview);
+            // Pass the results into ListViewAdapter.java
+            adapter = new ListViewAdapter(TopRatedFragment.this.getActivity(), arraylist);
+            // Set the adapter to the ListView
+            listview.setAdapter(adapter);
+            // Close the progressdialog
+            mProgressDialog.dismiss();
+        }
     }
 
  }
