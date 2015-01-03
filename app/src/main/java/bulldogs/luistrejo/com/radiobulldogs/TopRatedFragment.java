@@ -7,6 +7,7 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -35,8 +36,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-import Listviewcomentarios.JSONfunctions;
-import Listviewcomentarios.ListViewAdapter;
+import bulldogs.luistrejo.com.radiobulldogs.Listviewcomentarios.JSONfunctions;
+import bulldogs.luistrejo.com.radiobulldogs.Listviewcomentarios.ListViewAdapter;
 
 
 public class TopRatedFragment extends Fragment {
@@ -60,8 +61,12 @@ public class TopRatedFragment extends Fragment {
 
         View rootView = inflater.inflate(R.layout.fragment_top_rated, container, false);
         //corremos metodo para que carge listview
-        new DownloadJSON().execute();
 
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
+            new DownloadJSON().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+        } else {
+            new DownloadJSON().execute();
+        }
         mensaje=(EditText)rootView.findViewById(R.id.etMensaje);
         enviar=(ImageButton)rootView.findViewById(R.id.imbEnviar);
         enviar.setOnClickListener(new View.OnClickListener() {
@@ -131,6 +136,12 @@ public class TopRatedFragment extends Fragment {
                 public void run() {
                     Toast.makeText(context, "Mensaje enviado.", Toast.LENGTH_SHORT).show();
                     mensaje.setText("");
+                    //Actualizamos la lista de comentarios cada vez que se envie un mensaje
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
+                        new DownloadJSON().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+                    } else {
+                        new DownloadJSON().execute();
+                    }
                 }
 
         });

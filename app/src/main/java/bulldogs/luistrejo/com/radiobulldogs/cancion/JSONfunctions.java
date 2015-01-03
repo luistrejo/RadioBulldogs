@@ -1,4 +1,4 @@
-package Listviewcomentarios;
+package bulldogs.luistrejo.com.radiobulldogs.cancion;
 
 import android.util.Log;
 
@@ -10,8 +10,6 @@ import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.params.BasicHttpParams;
 import org.apache.http.params.HttpParams;
 import org.apache.http.params.HttpProtocolParams;
-import org.apache.http.protocol.HTTP;
-import org.apache.http.util.EntityUtils;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -31,8 +29,6 @@ public class JSONfunctions {
 
         // Download JSON data from URL
         try {
-            HttpParams params = new BasicHttpParams();
-            HttpProtocolParams.setContentCharset(params, "UTF-8");
             HttpClient httpclient = new DefaultHttpClient();
             HttpPost httppost = new HttpPost(url);
             HttpResponse response = httpclient.execute(httppost);
@@ -47,7 +43,7 @@ public class JSONfunctions {
         // Convert response to string
         try {
             BufferedReader reader = new BufferedReader(new InputStreamReader(
-                    is, "UTF-8"), 8);
+                    is, "iso-8859-1"), 8);
             StringBuilder sb = new StringBuilder();
             String line = null;
             while ((line = reader.readLine()) != null) {
