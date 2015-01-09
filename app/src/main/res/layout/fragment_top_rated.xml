@@ -3,23 +3,22 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="horizontal"
-    android:background="#ff49e7fa"
     android:visibility="visible"
-    android:weightSum="1"
     android:id="@+id/lista">
 
 
     <ListView
             android:id="@+id/listview"
             android:layout_width="fill_parent"
-            android:layout_height="390dp"
+            android:layout_height="match_parent"
             android:divider="#9933cc"
         android:headerDividersEnabled="false"
         android:layout_span="12"
-        android:layout_alignParentTop="true"
         android:stackFromBottom="true"
         android:dividerHeight="1dp"
-        android:layout_above="@+id/imbEnviar" />
+        android:layout_above="@+id/imbEnviar"
+        android:choiceMode="singleChoice"
+        android:layout_alignParentTop="true" />
 
     <ImageButton
         android:id="@+id/imbEnviar"
@@ -40,7 +39,6 @@
         android:inputType="textCapSentences"
         android:hint="Dinos tu comentario :)"
         android:textColor="#ff915bff"
-        android:textStyle="normal"
         android:layout_alignParentBottom="true"
         android:layout_toLeftOf="@+id/imbEnviar"
         android:layout_alignParentLeft="true"

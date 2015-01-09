@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.media.AudioManager;
 import android.os.AsyncTask;
 import android.os.Build;
+import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.util.Log;
@@ -21,13 +22,14 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Timer;
 
 import bulldogs.luistrejo.com.radiobulldogs.cancion.JSONfunctions;
 import bulldogs.luistrejo.com.radiobulldogs.cancion.ListViewAdapter;
 
 
 public class GamesFragment extends Fragment implements View.OnClickListener{
-    private static final String TAG = "ServicesDemo";
+    private static final String TAG = "Reproductor";
     private SeekBar volumeSeekbar = null;
     private AudioManager audioManager = null;
     Button buttonStart, buttonStop;
@@ -35,23 +37,19 @@ public class GamesFragment extends Fragment implements View.OnClickListener{
     JSONObject jsonobject;
     JSONArray jsonarray;
     ListView listview1;
-    ListViewAdapter adapter;
+    ListViewAdapter adapter1;
     //ProgressDialog mProgressDialog;
     ArrayList<HashMap<String, String>> arraylist;
     public static String songtitle = "songtitle";
     public static String nexttitle = "nexttitle";
-
+    Handler mHandler = new Handler();
 
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
         View rootView = inflater.inflate(R.layout.fragment_games, container, false);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
-            new JSONCanciones().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
-        } else {
-            new JSONCanciones().execute();
-         }
+
 
         initControls();
         volumeSeekbar = (SeekBar)rootView.findViewById(R.id.seekBar1);
@@ -61,9 +59,37 @@ public class GamesFragment extends Fragment implements View.OnClickListener{
         buttonStart.setOnClickListener(this);
         buttonStop.setOnClickListener(this);
 
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
+            new JSONCanciones().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+        } else {
+            new JSONCanciones().execute();
+        }
 
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                // TODO Auto-generated method stub
+                while (true) {
+                    try {
+                        Thread.sleep(5000);
+                        mHandler.post(new Runnable() {
 
-        return rootView;
+                            @Override
+                            public void run() {
+                                // TODO Auto-generated method stub
+                                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
+                                    new JSONCanciones().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+                                } else {
+                                    new JSONCanciones().execute();
+                                }                            }
+                        });
+                    } catch (Exception e) {
+                        // TODO: handle exception
+                    }
+                }
+            }
+        }).start();
+          return rootView;
 
     }
 @Override
@@ -126,18 +152,6 @@ public class GamesFragment extends Fragment implements View.OnClickListener{
     private class JSONCanciones extends AsyncTask<Void, Void, Void> {
 
         @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-            // Create a progressdialog
-            //mProgressDialog = new ProgressDialog(TopRatedFragment.this.getActivity());
-            // Set progressdialog message
-            //mProgressDialog.setMessage("Cargando comentarios...");
-            //mProgressDialog.setIndeterminate(false);
-            // Show progressdialog
-            //mProgressDialog.show();
-        }
-
-        @Override
         protected Void doInBackground(Void... params) {
             // Create an array
             arraylist = new ArrayList<HashMap<String, String>>();
@@ -158,8 +172,7 @@ public class GamesFragment extends Fragment implements View.OnClickListener{
                     arraylist.add(map);
                 }
             } catch (JSONException e) {
-                Log.e("Error", e.getMessage());
-                e.printStackTrace();
+                Log.e("Error obteniendo json de canciones", e.getMessage());
             }
             return null;
         }
@@ -167,13 +180,16 @@ public class GamesFragment extends Fragment implements View.OnClickListener{
         @Override
         protected void onPostExecute(Void args) {
             // Locate the listview in listview_main.xml
-            listview1 = (ListView)getActivity().findViewById(R.id.listView1);
-            // Pass the results into ListViewAdapter.java
-            adapter = new ListViewAdapter(GamesFragment.this.getActivity(), arraylist);
-            // Set the adapter to the ListView
-            listview1.setAdapter(adapter);
-            // Close the progressdialog
-            //mProgressDialog.dismiss();
+            try {
+                listview1 = (ListView) getActivity().findViewById(R.id.listView1);
+                // Pass the results into ListViewAdapter.java
+                adapter1 = new ListViewAdapter(getActivity(), arraylist);
+                // Set the adapter to the ListView
+                listview1.setAdapter(adapter1);
+            } catch (Exception e){
+                Log.d(TAG, "No se pudo cargar JSON canciones sonando.");
+            }
+
         }
     }
 

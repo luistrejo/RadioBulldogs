@@ -9,6 +9,7 @@ import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -46,6 +47,8 @@ public class TopRatedFragment extends Fragment {
     private ImageButton enviar;
     private ProgressDialog pDialog;
 
+
+
     // Declaramos variables para listview
     JSONObject jsonobject;
     JSONArray jsonarray;
@@ -55,6 +58,9 @@ public class TopRatedFragment extends Fragment {
     ArrayList<HashMap<String, String>> arraylist;
     public static String usuario = "usuario";
     public static String comentario = "comentario";
+    Handler mHandler = new Handler();
+    String TAG = "Comentarios";
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,Bundle savedInstanceState) {
@@ -78,7 +84,34 @@ public class TopRatedFragment extends Fragment {
                     Toast.makeText(TopRatedFragment.this.getActivity(), "Ups! Tal parece que no has escrito nada.",Toast.LENGTH_LONG).show();
             }
         });
-          return rootView;
+
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                // TODO Auto-generated method stub
+                while (true) {
+                    try {
+                        Thread.sleep(10000);
+                        mHandler.post(new Runnable() {
+
+                            @Override
+                            public void run() {
+                                // TODO Auto-generated method stub
+                                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
+                                    new DownloadJSON().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+                                } else {
+                                    new DownloadJSON().execute();
+                                }                            }
+                        });
+                    } catch (Exception e) {
+                        // TODO: handle exception
+                    }
+                }
+            }
+        }).start();
+
+
+        return rootView;
     }
 
     //enviamos el mensaje escrito al servidor
@@ -91,7 +124,7 @@ public class TopRatedFragment extends Fragment {
 
         //Consultamos valor usuario del shared preferences
         SharedPreferences settings = getActivity().getSharedPreferences("usuario",Context.MODE_PRIVATE);
-        String usuario = settings.getString("usuario", "valorpordefecto");
+        String usuario = settings.getString("usuario", "?");
 
         //Añadimos los datos que vamos a enviar
         nameValuePairs = new ArrayList<NameValuePair>(2);
@@ -171,12 +204,12 @@ public class TopRatedFragment extends Fragment {
         protected void onPreExecute() {
             super.onPreExecute();
             // Create a progressdialog
-            mProgressDialog = new ProgressDialog(TopRatedFragment.this.getActivity());
+            //mProgressDialog = new ProgressDialog(TopRatedFragment.this.getActivity());
             // Set progressdialog message
-            mProgressDialog.setMessage("Cargando comentarios...");
-            mProgressDialog.setIndeterminate(false);
+           // mProgressDialog.setMessage("Cargando comentarios...");
+            //mProgressDialog.setIndeterminate(false);
             // Show progressdialog
-            mProgressDialog.show();
+            //mProgressDialog.show();
         }
 
         @Override
@@ -209,17 +242,22 @@ public class TopRatedFragment extends Fragment {
         @Override
         protected void onPostExecute(Void args) {
             // Locate the listview in listview_main.xml
-            listview = (ListView)getActivity().findViewById(R.id.listview);
-            // Pass the results into ListViewAdapter.java
-            adapter = new ListViewAdapter(TopRatedFragment.this.getActivity(), arraylist);
-            // Set the adapter to the ListView
-            listview.setAdapter(adapter);
+           try {
+               listview = (ListView)getActivity().findViewById(R.id.listview);
+               // Pass the results into ListViewAdapter.java
+               adapter = new ListViewAdapter(TopRatedFragment.this.getActivity(), arraylist);
+               // Set the adapter to the ListView
+               listview.setAdapter(adapter);
+           }catch (Exception e ) {
+               Log.d(TAG, "Error al cargar lista de comentarios");
+           }
+
             // Close the progressdialog
-            mProgressDialog.dismiss();
+           // mProgressDialog.dismiss();
         }
     }
 
- }
+}
 
 
 

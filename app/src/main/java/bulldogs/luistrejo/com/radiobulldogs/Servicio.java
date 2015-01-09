@@ -79,13 +79,4 @@ public class Servicio extends Service{
         stopForeground(true);
     }
 
-    private void playnoti() {
-        player.start();
-    }
-    private void stopnoti() {
-        player.stop();
-    }
-
-
-
 }
