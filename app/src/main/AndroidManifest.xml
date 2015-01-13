@@ -32,9 +32,11 @@
             android:name=".GamesFragment"
             android:label="@string/title_activity_games_fragment" >
         </activity>
+
         <service
-            android:enabled="true"
-            android:name=".Servicio" />
+            android:name=".Servicio"
+            android:enabled="true" />
+
         <activity
             android:name=".Registro"
             android:label="@string/title_activity_registro"
@@ -54,6 +56,14 @@
         <activity
             android:name=".Sugerencias"
             android:label="@string/title_activity_sugerencias"
+            android:parentActivityName=".MainActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="bulldogs.luistrejo.com.radiobulldogs.MainActivity" />
+        </activity>
+        <activity
+            android:name=".Calendario"
+            android:label="@string/title_activity_calendario"
             android:parentActivityName=".MainActivity" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"

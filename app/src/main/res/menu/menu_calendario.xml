@@ -1,0 +1,36 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="bulldogs.luistrejo.com.radiobulldogs.Calendario">
+
+
+    <item
+        android:id="@+id/action_fastscroll"
+        app:showAsAction="never"
+        android:title="action_fastscroll"
+        android:checkable="true"/>
+
+    <item
+        android:id="@+id/action_addpadding"
+        app:showAsAction="never"
+        android:title="action_addpadding"
+        android:checkable="true"/>
+
+    <item
+        android:id="@+id/action_showShadow"
+        app:showAsAction="never"
+        android:title="action_showShadow"
+        android:checkable="true"/>
+
+    <item
+        android:id="@+id/action_showHeaderAndFooter"
+        app:showAsAction="never"
+        android:title="action_showHeaderAndFooter"
+        android:checkable="true"/>
+
+    <item
+        android:id="@+id/action_updateDataset"
+        app:showAsAction="never"
+        android:title="action_updateDataset"
+        />
+</menu>

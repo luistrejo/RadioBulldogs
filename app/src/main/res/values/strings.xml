@@ -13,4 +13,11 @@
     <string name="title_activity_acerca">Acerca de</string>
     <string name="title_activity_sugerencias">Sugerencias</string>
     <string name="nota_wifi">Nota: Recuerda estar conectado a la red Wi-fi "Radio Bulldogs".</string>
+    <string name="title_activity_calendario">Calendario de actividades</string>
+    <string name="meses">"Enero", "Febrero"</string>
+    <string name="mes1">"7     Regreso de Periodo Vacacional", "9     Inscripción a Recursos", "12 - 23     Recursos",
+        "19 - 21     Inscripción de Alumnos Regurales: 2°, 4° y 6°", "26 - 28     Captura de Calificaciones de Recurso", 
+        "26 - 30     Capacitación a Docentes" 
+    </string>
+    <string name="mes2">"3 - 6     Planeación Curricular", "3     Inicio de clases"</string>
 </resources>

@@ -109,6 +109,11 @@ public class MainActivity extends FragmentActivity implements
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
 
+            case R.id.Calendario:
+                Intent calendario = new Intent(this, Calendario.class);
+                calendario.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(calendario);
+                break;
             case R.id.Sugerencias:
                 Intent sugerencias = new Intent(this, Sugerencias.class);
                 sugerencias.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
